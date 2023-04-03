@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+        margin: 0;
+    }
+
+    #user {
+        background-color: white;
+        border-radius: 100px;
+        padding: 10px;
+        font-size: 20px;
+        padding-left: 20px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        margin-top: 15px;
+    }
+
+    #user.selected {
+        border: solid #ff6200 6px;
+    }
+
+    #post {
+        background-color: white;
+        border-radius: 10px;
+        font-size: 20px;
+        padding: 10px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+        margin-top: 15px;
+    }
+
+    body {
+        background: linear-gradient(45deg, rgb(0, 0, 82), rgb(124, 2, 2));
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+</style>
+
+<body>
+    <!-- main content -->
+    <div id="content" style="display: flex; ">
+        <!-- users container -->
+        <div style="width: 30%; ">
+            <!-- users container -->
+            <div id="users" style="width: 90%; height: 100px; margin: 0 auto;">
+
+                <!-- user -->
+                <div id="user" class="selected">
+                    <h3>kamel</h3>
+                    <h3>kamel@gimale</h3>
+                </div>
+                <!-- //user// -->
+
+                <!-- user -->
+                <div id="user">
+                    <h3>kamel</h3>
+                    <h3>kamel@gimale</h3>
+                </div>
+                <!-- //user// -->
+
+                <!-- user -->
+                <div id="user">
+                    <h3>kamel</h3>
+                    <h3>kamel@gimale</h3>
+                </div>
+                <!-- //user// -->
+
+                <!-- user -->
+                <div id="user">
+                    <h3>kamel</h3>
+                    <h3>kamel@gimale</h3>
+                </div>
+                <!-- //user// -->
+
+                <!-- user -->
+                <div id="user">
+                    <h3>kamel</h3>
+                    <h3>kamel@gimale</h3>
+                </div>
+                <!-- //user// -->
+
+                <!-- user -->
+                <div id="user">
+                    <h3>kamel</h3>
+                    <h3>kamel@gimale</h3>
+                </div>
+                <!-- //user// -->
+
+                <!-- user -->
+                <div id="user">
+                    <h3>kamel</h3>
+                    <h3>kamel@gimale</h3>
+                </div>
+                <!-- //user// -->
+
+                <!-- user -->
+                <div id="user">
+                    <h3>kamel</h3>
+                    <h3>kamel@gimale</h3>
+                </div>
+                <!-- //user// -->
+
+                <!-- user -->
+                <div id="user">
+                    <h3>kamel</h3>
+                    <h3>kamel@gimale</h3>
+                </div>
+                <!-- //user// -->
+            </div>
+            <!-- //users container// -->
+        </div>
+        <!-- //users container// -->
+
+
+        <!-- post container -->
+        <div id="post-container" style="width: 70%;background-color: rgb(236,236,236); padding: 20px 0px;">
+
+            <!-- posts -->
+            <div id="posts" style="width: 90%; margin: 0 auto;">
+                <!-- post -->
+                <div id="post">
+                    <h3>hello</h3>
+                    <h4>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. A quasi rem tempore unde perferendis
+                        eius quis quod laboriosam voluptate, eveniet aperiam quam cumque iste corrupti ipsum praesentium
+                        voluptatem doloribus! Adipisci!
+                    </h4>
+                </div>
+                <!-- //post// -->
+            </div>
+            <!-- //posts// -->
+        </div>
+        <!-- //post container// -->
+    </div>
+    <!-- //main content// -->
+</body>
+<script>
+
+
+    function getPosts(userId) {
+        let request = new XMLHttpRequest()
+        request.open("GET", "https://jsonplaceholder.typicode.com/posts?userId="+userId)
+        request.responseType = "json"
+        request.send()
+        request.onload = function () {
+            if (request.status >= 200 && request.status < 300) {
+                let posts = request.response
+
+                document.getElementById("posts").innerHTML = ""
+
+                for (post of posts) {
+                    let content = `
+                    <div id="post">
+                    <h3>${post.title}</h3>
+                    <h4>
+                        ${post.body}
+                    </h4>
+                </div>
+                    `
+
+                    document.getElementById("posts").innerHTML += content
+
+                }
+            } else {
+                alert("error")
+            }
+        }
+    }
+
+    function getUsers() {
+        let request = new XMLHttpRequest()
+        request.open("GET", "https://jsonplaceholder.typicode.com/users")
+        request.responseType = "json"
+        request.send()
+        request.onload = function () {
+            if (request.status >= 200 && request.status < 300) {
+                let users = request.response
+
+                document.getElementById("users").innerHTML = ""
+
+                for (user of users) {
+                    let content = `
+                    <div id="user" onClick="userClicked(${user.id},this)">
+                    <h3>${user.name}</h3>
+                    <h3>${user.email}</h3>
+                </div>
+                    `
+
+                    document.getElementById("users").innerHTML += content
+
+                }
+            } else {
+                alert("error")
+            }
+        }
+    }
+
+    getUsers()
+    getPosts()
+
+    function userClicked(id,el){
+        getPosts(id)
+
+        let selectedElements = document.getElementsByClassName("selected")
+        for(element of selectedElements){
+            element.classList.remove("selected")
+        }
+        el.classList.add("selected")
+    }
+</script>
+
+</html>
